@@ -9,12 +9,11 @@
 //    node scripts/run_tests.js --coverage     - runs all tests with coverage
 //    node scripts/run_tests.js src/app.test.ts - runs a specific test file
 //
-'use strict';
 
 import { spawn } from 'node:child_process';
-import { styleText } from 'node:util';
 import { glob } from 'node:fs/promises';
-import { platform, cpus } from 'node:os';
+import { cpus, platform } from 'node:os';
+import { styleText } from 'node:util';
 
 async function main() {
     // Parse command line arguments
@@ -22,9 +21,7 @@ async function main() {
     const hasVerboseFlag = args.includes('--verbose') || args.includes('-v');
     const hasCoverageFlag = args.includes('--coverage');
 
-    const filteredArgs = args.filter(arg =>
-        arg !== '--verbose' && arg !== '-v' && arg !== '--coverage'
-    );
+    const filteredArgs = args.filter((arg) => arg !== '--verbose' && arg !== '-v' && arg !== '--coverage');
 
     const hasSpecificFiles = filteredArgs.length > 0;
     const verbose = hasVerboseFlag || hasSpecificFiles;
@@ -72,24 +69,24 @@ async function main() {
             '--include=src/**/*.ts',
             '--exclude=**/*.test.ts',
             viteNodeBin,
-            ...testFiles
+            ...testFiles,
         ];
 
         const env = {
             ...process.env,
-            DEEPKIT_TEST_MODE: 'true'
+            deepkit_test_mode: 'true',
         };
 
         const child = isWindows
             ? spawn(`${binName} ${binArgs.join(' ')}`, {
-                stdio: 'inherit',
-                env,
-                shell: true
-            })
+                  stdio: 'inherit',
+                  env,
+                  shell: true,
+              })
             : spawn(binName, binArgs, {
-                stdio: 'inherit',
-                env
-            });
+                  stdio: 'inherit',
+                  env,
+              });
 
         child.on('close', (code) => {
             console.log('\nCoverage report: ./coverage/lcov.info (for VSCode Coverage Gutters plugin)');
@@ -105,7 +102,6 @@ async function main() {
     const results = new Map();
     let completed = 0;
     let started = 0;
-    let hasFailures = false;
 
     // Calculate optimal concurrency: 80% of available CPUs
     const maxConcurrency = Math.max(1, Math.floor(cpus().length * 0.8));
@@ -141,19 +137,19 @@ async function main() {
             updateProgress(testFile, true);
             const env = {
                 ...process.env,
-                DEEPKIT_TEST_MODE: 'true'
+                deepkit_test_mode: 'true',
             };
 
             const child = isWindows
                 ? spawn(`${viteNodeBin} ${testFile}`, {
-                    stdio: verbose ? 'inherit' : ['inherit', 'pipe', 'pipe'],
-                    env,
-                    shell: true
-                })
+                      stdio: verbose ? 'inherit' : ['inherit', 'pipe', 'pipe'],
+                      env,
+                      shell: true,
+                  })
                 : spawn(viteNodeBin, [testFile], {
-                    stdio: verbose ? 'inherit' : ['inherit', 'pipe', 'pipe'],
-                    env
-                });
+                      stdio: verbose ? 'inherit' : ['inherit', 'pipe', 'pipe'],
+                      env,
+                  });
 
             let stdout = '';
             let stderr = '';
@@ -177,10 +173,6 @@ async function main() {
             child.on('close', (code) => {
                 results.set(testFile, { code, stdout, stderr });
                 completed++;
-
-                if (code !== 0) {
-                    hasFailures = true;
-                }
 
                 // Update progress on completion
                 updateProgress(testFile, false);

@@ -58,7 +58,7 @@
             "name": "Debug All Tests",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/scripts/run_tests.js",
+            "program": "${workspaceFolder}/scripts/run-tests.js",
             "args": [
                 "--verbose"
             ],

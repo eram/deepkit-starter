@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import { strict as assert } from 'node:assert/strict';
+import { test } from 'node:test';
 import { app, TestCommand } from './app.ts';
 
 test('TestCommand class is exported and decorated', () => {
@@ -28,12 +28,12 @@ test('TestCommand execute method exists with correct signature', () => {
 
 test('TestCommand can be instantiated and executed with mock logger', async () => {
     const logs: string[] = [];
-    const mockLogger = {
-        log: (msg: string) => logs.push(msg)
+    const mockLogger: Pick<import('@deepkit/logger').Logger, 'log'> = {
+        log: (msg: string) => logs.push(msg),
     };
 
     const cmd = new TestCommand();
-    await cmd.execute('TestUser', 5, false, mockLogger as any);
+    await cmd.execute('TestUser', 5, false, mockLogger);
 
     // Verify logs contain expected output
     const allLogs = logs.join('\n');
@@ -48,12 +48,12 @@ test('TestCommand can be instantiated and executed with mock logger', async () =
 
 test('TestCommand verbose mode shows user data', async () => {
     const logs: string[] = [];
-    const mockLogger = {
-        log: (msg: string) => logs.push(msg)
+    const mockLogger: Pick<import('@deepkit/logger').Logger, 'log'> = {
+        log: (msg: string) => logs.push(msg),
     };
 
     const cmd = new TestCommand();
-    await cmd.execute('Verbose', 1, true, mockLogger as any);
+    await cmd.execute('Verbose', 1, true, mockLogger);
 
     const allLogs = logs.join('\n');
     assert.match(allLogs, /Verbose mode: true/, 'Should show verbose enabled');

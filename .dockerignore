@@ -1,0 +1,9 @@
+node_modules
+.git
+.vscode
+*.log
+*.md
+build-logs
+lcov.info
+.env
+.DS_Store

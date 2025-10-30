@@ -1,7 +1,6 @@
-import { App } from '@deepkit/app';
-import { cli, Command, Flag } from '@deepkit/app';
-import { MinLength, MaxLength, Positive, Email } from '@deepkit/type';
+import { App, Command, cli, Flag } from '@deepkit/app';
 import { Logger } from '@deepkit/logger';
+import { Email, MaxLength, MinLength, Positive } from '@deepkit/type';
 
 interface User {
     name: string & MinLength<3> & MaxLength<50>;
@@ -10,14 +9,14 @@ interface User {
 }
 
 @cli.controller('test', {
-    description: 'Test command to verify Deepkit type system'
+    description: 'Test command to verify Deepkit type system',
 })
 export class TestCommand implements Command {
     async execute(
         name: string & MinLength<3> = 'World',
         count: number & Positive = 1,
         verbose: boolean & Flag = false,
-        logger: Logger
+        logger: Logger,
     ) {
         logger.log('=== Deepkit Type System Test ===');
         logger.log(`Hello ${name}!`);
@@ -28,7 +27,7 @@ export class TestCommand implements Command {
         const user: User = {
             name: 'John Doe',
             age: 30,
-            email: 'john@example.com'
+            email: 'john@example.com',
         };
 
         if (verbose) {
@@ -43,11 +42,11 @@ export class TestCommand implements Command {
 }
 
 export const app = new App({
-    controllers: [TestCommand]
+    controllers: [TestCommand],
 });
 
 // Auto-run when not being imported by unit tests
 // We set an environment variable in test-runner to prevent auto-run
-if (!process.env.DEEPKIT_TEST_MODE) {
+if (!process.env.deepkit_test_mode) {
     app.run();
 }

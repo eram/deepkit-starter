@@ -3,8 +3,13 @@
   "scripts": {
     "app": "vite-node src/app.ts",
     "dev": "vite-node src/app.ts",
-    "test": "node scripts/run_tests.js",
-    "ci": "node --test ci/*.test.js"
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "npm run lint && node scripts/run-tests.js",
+    "ci": "node --test ci/*.test.js",
+    "build": "docker build --build-arg \"BUILD_TS=$(node -e 'console.log(new Date().toISOString());')\" --target prod -t dk-test:latest . && docker build --build-arg \"BUILD_TS=$(node -e 'console.log(new Date().toISOString());')\" --target scan . && docker build --build-arg \"BUILD_TS=$(node -e 'console.log(new Date().toISOString());')\" --target logs --output type=local,dest=./build-logs .",
+    "build:grype": "docker build --build-arg \"BUILD_TS=$(node -e 'console.log(new Date().toISOString());')\" --target scan .",
+    "release": "node scripts/release.js"
   },
   "dependencies": {
     "@deepkit/app": "^1.0.19",
@@ -16,6 +21,7 @@
     "vite-node": "^3.2.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.2",
     "c8": "^10.1.3"
   }
 }

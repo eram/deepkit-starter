@@ -1,6 +1,6 @@
-import { test } from 'node:test';
 import { strict as assert } from 'node:assert/strict';
 import { execSync } from 'node:child_process';
+import { test } from 'node:test';
 
 const APP_CMD = 'npm run app --';
 
@@ -43,8 +43,9 @@ test('app validates minimum string length', () => {
         execSync(`${APP_CMD} test "AB" 1`, { encoding: 'utf8', stdio: 'pipe' });
         assert.fail('Should have thrown an error for short name');
     } catch (error) {
-        const stderr = error.stderr?.toString() || error.stdout?.toString() || '';
-        assert.match(stderr, /Min length is 3/, 'Should show validation error for short name');
+        // Check both stderr and stdout as error might be in either depending on environment
+        const output = (error.stderr?.toString() || '') + (error.stdout?.toString() || '');
+        assert.match(output, /Min length is 3/, 'Should show validation error for short name');
     }
 });
 
