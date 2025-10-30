@@ -46,7 +46,7 @@ export const app = new App({
 });
 
 // Auto-run when not being imported by unit tests
-// We set an environment variable in test-runner to prevent auto-run
+// We set an environment variable in Vitest to prevent auto-run
 if (!process.env.deepkit_test_mode) {
     app.run();
 }

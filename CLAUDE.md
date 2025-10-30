@@ -11,16 +11,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - In non-local environment, including prod, code is run on a docker image. Use npm run build to build the image. This also runs the unit tests as first stage and a vulnerability scan as last stage. Failing test should fail the build.
 - Use TDD when coding: always write test before fixing or changing the code and re-run the tests after changes.
 - Write code in such a way that tests pass cleanly without errors.
-- Code coverage in the form of lcov is created when running test using node:test and c8. 80% coverage on all code is required. Exceptions require explicit developer approval.
+- Code coverage is tracked using Vitest with V8 provider. Coverage reports in lcov format are generated in `./coverage/`.
+- **Coverage Limitations**: Due to Deepkit type compiler transformations, V8 coverage tracking does not work accurately. Coverage thresholds are disabled. This is a known limitation when combining custom Vite plugins with V8 coverage.
+- Coverage exclusions (automatic): test files (*.test.ts, *.spec.ts), mock files (**/__mocks__/**, **/mock/**), and index files (index.ts, index.js, etc.)
+- Coverage exclusions (manual): Use `/* v8 ignore start */` and `/* v8 ignore stop */` comments to exclude specific code blocks from coverage analysis.
 - Adding dependency libraries into `dependencies` in package.json is strictly prohibited. Needs explicit developer approval.
-- Code assumes Node.js >= 24 (see package.json engines field).
+- Code assumes Node.js >= 24 (see package.json engine field).
 - You should never try to change files outside of the working folder (base folder of the project).
-- File naming uses kebab-case convention (e.g., run-tests.js, not run_tests.js) following Deepkit standards.
+- All the project config files (the files outside src) should not be changed without explicit developer approval.
 
 ### TypeScript Configuration
 
 - Target: es2020
-- Module: CommonJS
+- Module: ESNext
+- Module Resolution: bundler
+- Lib: ["es2020", "DOM"]
 - Strict mode enabled
 - Deepkit reflection enabled (`"reflection": true` in tsconfig.json)
 - Experimental decorators enabled for Deepkit framework
@@ -29,22 +34,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Deepkit Framework
 
 - Uses @deepkit/app for application structure and dependency injection
-- Type compiler enabled via @deepkit/vite plugin in vite.config.ts
+- Type compiler enabled via @deepkit/vite plugin in vitest.config.ts (shared with Vite)
 - CLI commands implemented with @cli.controller decorator
 - Runtime type validation using Deepkit's type system
 - Commands must implement the Command interface from @deepkit/app
 
 ### Testing Patterns
 
-- Unit tests are written using node:test and assertions from assert/strict
-- Test files named `*.test.ts` alongside source in src/ folder
-- Integration tests in ci/ folder test full CLI behavior
-- Use direct imports for unit tests (fast, ~26ms)
-- Use execSync for integration tests (slow, thorough, ~50s)
-- Test runner (scripts/run-tests.js) implements:
-  - Queue-based concurrency control (CPUs * 0.8)
-  - Live progress display with line overwriting
-  - Coverage reporting with c8
+- **Test Framework**: Vitest 3.2.4 (downgraded from 4.0 due to Windows compatibility issues)
+- **Assertions**: Vitest's `expect` API (Jest-compatible)
+- **Test Files**: `*.test.ts` files alongside source in src/ folder
+- **Unit Tests**: Use direct imports with mock dependencies (fast, run via Vitest)
+- **Integration Tests** (ci/ folder): Run via `scripts/run-ci-tests.js` using vite-node directly (not through Vitest due to env var inheritance issues)
+- **Environment Variable**: `deepkit_test_mode` is set by Vitest to prevent app auto-run during test imports
+- **Watch Mode**: Available via `npm run test:watch` for TDD workflows
+- **Test Organization**: Use `describe` and `test` from Vitest, `beforeEach`/`afterEach` for setup/teardown
 - Tests can be debugged using VSCode launch configurations
 
 ### Coding patterns
@@ -53,19 +57,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Never use `any` >> use `unknown` instead
 - Use Deepkit type annotations for type validation
 - Export app and command classes for testing
-- Use DEEPKIT_TEST_MODE or process.argv inspection to prevent auto-run during tests
+- Use `deepkit_test_mode` environment variable check to prevent app auto-run during test imports
+- File naming uses kebab-case convention (e.g., run-tests.js, not run_tests.js) following Deepkit standards.
 
 ## Commands
 
 ### Testing
 
-- `npm test` - Run all tests with coverage reporting using queue-based runner
-- `npm run ci` - Run integration tests in ci/ folder
+- `npm test` - Run linter and all unit tests via Vitest
+- `npm run test:unit` - Run unit tests with coverage report
+- `npm run test:watch` - Run tests in watch mode for TDD (no coverage)
+- `npm run ci` - Run integration tests via vite-node (scripts/run-ci-tests.js)
+- `npx vitest run src/app.test.ts` - Run specific test file
 - VSCode debugger can be used to debug tests (see .vscode/launch.json)
+- Coverage reports: `./coverage/lcov.info` (for VSCode Coverage Gutters extension)
+- **Note**: Coverage tracking is currently inaccurate due to Deepkit type compiler transformations
 
 ### Development
 
-- `npm run dev` - Run application using vite-node (alias for npm run app)
+- `npm run dev` - Run application in watch mode (hot-reload on file changes)
 - `npm run app` - Run application using vite-node
 
 ### Building
@@ -107,10 +117,10 @@ Main application file with:
 
 #### 2. Test Infrastructure
 
-- **Unit Tests**: Fast tests using direct imports, mock dependencies
-- **Integration Tests**: Full CLI behavior tests using execSync
-- **Test Runner**: Queue-based parallel execution with progress display
-- **Coverage**: c8 integration for code coverage tracking
+- **Unit Tests**: Fast tests using direct imports with Vitest, mock dependencies
+- **Integration Tests**: Full CLI behavior tests via scripts/run-ci-tests.js using vite-node and node:assert
+- **CI Test Runner**: Custom runner using util.parseArgs() with async/await pattern
+- **Coverage**: Vitest with V8 provider (note: limited accuracy due to Deepkit transformations)
 
 #### 3. Docker Build Strategy
 

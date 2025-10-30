@@ -18,18 +18,14 @@ COPY . /app
 RUN mkdir -p /log && chown -R appuser:appuser /app /log
 USER appuser
 RUN npm ci
-# Set NODE_OPTIONS to load localStorage mock before any modules
-ENV NODE_OPTIONS="--require /app/scripts/mock-localstorage.cjs"
-# Run CI tests, add build timestamp to log, and fail build if 'fail 0' is not present
-RUN rm -f /log/npm-test.log && echo "Build timestamp: $BUILD_TS" > /log/npm-test.log && /bin/sh -c 'set -o pipefail && npm run ci | tee -a /log/npm-test.log'; grep -q "fail 0" /log/npm-test.log
+# Run tests with Vitest, add build timestamp to log, and fail build if tests fail
+RUN rm -f /log/npm-test.log && echo "Build timestamp: $BUILD_TS" > /log/npm-test.log && /bin/sh -c 'set -o pipefail && npm test 2>&1 | tee -a /log/npm-test.log'
 
 # ---- Production stage (only builds if tests pass) ----
 FROM base AS prod
 WORKDIR /app
 COPY --from=test /app /app
 ENV NODE_ENV=production
-# Set NODE_OPTIONS to load localStorage mock before any modules
-ENV NODE_OPTIONS="--require /app/scripts/mock-localstorage.cjs"
 RUN npm ci --only=production
 # Remove unnecessary files to minimize image size
 RUN rm -rf \
