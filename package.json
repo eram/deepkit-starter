@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@deepkit/app": "^1.0.19",
+    "@deepkit/type": "^1.0.19",
+    "@deepkit/type-compiler": "^1.0.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
