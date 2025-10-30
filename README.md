@@ -1,4 +1,4 @@
-# dk-test
+# Deepkit Starter Project
 
 A Deepkit Framework project template with TypeScript, runtime type validation, and production-ready infrastructure.
 
