@@ -3,6 +3,7 @@
   "scripts": {
     "app": "vite-node src/app.ts",
     "dev": "vite-node src/app.ts",
+    "test": "node scripts/run_tests.js",
     "ci": "node --test ci/*.test.js"
   },
   "dependencies": {
@@ -13,5 +14,8 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
     "vite-node": "^3.2.4"
+  },
+  "devDependencies": {
+    "c8": "^10.1.3"
   }
 }

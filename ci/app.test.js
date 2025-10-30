@@ -2,10 +2,10 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 
-const APP_CMD = 'npx vite-node src/app.ts';
+const APP_CMD = 'npm run app --';
 
 test('app shows help when no command provided', () => {
-    const output = execSync(`${APP_CMD}`, { encoding: 'utf8' });
+    const output = execSync('npm run app', { encoding: 'utf8' });
 
     assert.match(output, /USAGE/, 'Should show usage information');
     assert.match(output, /COMMANDS/, 'Should list available commands');

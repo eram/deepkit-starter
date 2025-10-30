@@ -4,6 +4,10 @@ node_modules/
 # Build output
 dist/
 
+# Test coverage
+coverage/
+.nyc_output/
+
 # Logs
 *.log
 
@@ -12,7 +16,9 @@ dist/
 .env.local
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/README.md
 .idea/
 *.swp
 *.swo

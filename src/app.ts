@@ -12,7 +12,7 @@ interface User {
 @cli.controller('test', {
     description: 'Test command to verify Deepkit type system'
 })
-class TestCommand implements Command {
+export class TestCommand implements Command {
     async execute(
         name: string & MinLength<3> = 'World',
         count: number & Positive = 1,
@@ -42,6 +42,12 @@ class TestCommand implements Command {
     }
 }
 
-new App({
+export const app = new App({
     controllers: [TestCommand]
-}).run();
+});
+
+// Auto-run when not being imported by unit tests
+// We set an environment variable in test-runner to prevent auto-run
+if (!process.env.DEEPKIT_TEST_MODE) {
+    app.run();
+}
