@@ -31,7 +31,7 @@ RUN npm ci --only=production
 RUN rm -rf \
   /app/src/**/*.test.* \
   /app/ci/ \
-  /app/scripts/*test* \
+  /app/script/*test* \
   /app/docs/ \
   /app/*.cpuprofile \
   /app/lcov.info \

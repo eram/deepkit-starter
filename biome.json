@@ -11,8 +11,8 @@
       "src/**/*.js",
       "src/**/*.ts",
       "ci/**/*.js",
-      "scripts/**/*.js",
-      "scripts/**/*.cjs",
+      "script/**/*.js",
+      "script/**/*.cjs",
       "!!**/*.min.js",
       "!!node_modules"
     ]

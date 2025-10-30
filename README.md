@@ -25,7 +25,7 @@ npm run dev
 npm test
 
 # Run tests without coverage (fast mode)
-node scripts/run-tests.js --no-coverage
+node script/run-tests.js --no-coverage
 
 # Build Docker image
 npm run build
@@ -39,7 +39,7 @@ npm run release
 ```
 src/              - Application source code
 ci/               - Integration tests
-scripts/          - Build and release scripts
+script/          - Build and release scripts
 .vscode/          - VSCode debug configurations
 ```
 

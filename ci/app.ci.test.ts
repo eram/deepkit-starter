@@ -1,7 +1,7 @@
 // ci/app.ci.test.ts
 // Integration tests for the app CLI
 //
-// This file exports a `createTests` function that will be loaded and executed by scripts/run-ci-tests.js
+// This file exports a `createTests` function that will be loaded and executed by script/run-ci-tests.js
 
 import { match } from 'node:assert/strict';
 import type { Test } from './test';

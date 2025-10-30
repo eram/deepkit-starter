@@ -45,7 +45,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Assertions**: Vitest's `expect` API (Jest-compatible)
 - **Test Files**: `*.test.ts` files alongside source in src/ folder
 - **Unit Tests**: Use direct imports with mock dependencies (fast, run via Vitest)
-- **Integration Tests** (ci/ folder): Run via `scripts/run-ci-tests.js` using vite-node directly (not through Vitest due to env var inheritance issues)
+- **Integration Tests** (ci/ folder): Run via `script/run-ci-tests.js` using vite-node directly (not through Vitest due to env var inheritance issues)
 - **Environment Variable**: `deepkit_test_mode` is set by Vitest to prevent app auto-run during test imports
 - **Watch Mode**: Available via `npm run test:watch` for TDD workflows
 - **Test Organization**: Use `describe` and `test` from Vitest, `beforeEach`/`afterEach` for setup/teardown
@@ -67,7 +67,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm test` - Run linter and all unit tests via Vitest
 - `npm run test:unit` - Run unit tests with coverage report
 - `npm run test:watch` - Run tests in watch mode for TDD (no coverage)
-- `npm run ci` - Run integration tests via vite-node (scripts/run-ci-tests.js)
+- `npm run ci` - Run integration tests via vite-node (script/run-ci-tests.js)
 - `npx vitest run src/app.test.ts` - Run specific test file
 - VSCode debugger can be used to debug tests (see .vscode/launch.json)
 - Coverage reports: `./coverage/lcov.info` (for VSCode Coverage Gutters extension)
@@ -86,7 +86,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Release Management
 
-- `node scripts/release.js [patch|minor|major|ci]` - Version bump and release
+- `node script/release.js [patch|minor|major|ci]` - Version bump and release
   - No params: auto-detect based on commit messages (feat = minor, else patch)
   - `ci`: creates timestamped version without git tag
   - `patch|minor|major`: explicit version bump
@@ -101,7 +101,7 @@ This is a Deepkit Framework application organized into:
 
 - **src/** - Application source code (app.ts, test files)
 - **ci/** - Continuous integration tests (integration tests)
-- **scripts/** - Build, test, and utility scripts
+- **script/** - Build, test, and utility scripts
 - **.vscode/** - VSCode debug configurations
 
 ### Key Architectural Components
@@ -118,7 +118,7 @@ Main application file with:
 #### 2. Test Infrastructure
 
 - **Unit Tests**: Fast tests using direct imports with Vitest, mock dependencies
-- **Integration Tests**: Full CLI behavior tests via scripts/run-ci-tests.js using vite-node and node:assert
+- **Integration Tests**: Full CLI behavior tests via script/run-ci-tests.js using vite-node and node:assert
 - **CI Test Runner**: Custom runner using util.parseArgs() with async/await pattern
 - **Coverage**: Vitest with V8 provider (note: limited accuracy due to Deepkit transformations)
 
@@ -149,7 +149,7 @@ Available debug configurations in .vscode/launch.json:
 
 ### Version Management
 
-Release process using scripts/release.js:
+Release process using script/release.js:
 
 - Follows semantic versioning (semver)
 - Auto-detects version bump from commit messages

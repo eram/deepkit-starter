@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 //
-// scripts/run-ci-tests.js
+// script/run-ci-tests.js
 // CI integration test runner using vite-node directly (not through Vitest)
 // Usage:
-//   node scripts/run-ci-tests.js                 - run all tests
-//   node scripts/run-ci-tests.js --verbose       - run with verbose output
-//   node scripts/run-ci-tests.js test-name       - run specific test
+//   node script/run-ci-tests.js                 - run all tests
+//   node script/run-ci-tests.js --verbose       - run with verbose output
+//   node script/run-ci-tests.js test-name       - run specific test
 //
 
 import { exec } from 'node:child_process';
@@ -47,16 +47,16 @@ const { values: options, positionals } = parseArgs({
 
 if (options.help) {
     console.log(`
-Usage: node scripts/run-ci-tests.js [options] [test-filter]
+Usage: node script/run-ci-tests.js [options] [test-filter]
 
 Options:
   -v, --verbose    Show detailed test output
   -h, --help       Show this help message
 
 Examples:
-  node scripts/run-ci-tests.js                    Run all CI tests
-  node scripts/run-ci-tests.js --verbose          Run with detailed output
-  node scripts/run-ci-tests.js "help"             Run tests matching "help"
+  node script/run-ci-tests.js                    Run all CI tests
+  node script/run-ci-tests.js --verbose          Run with detailed output
+  node script/run-ci-tests.js "help"             Run tests matching "help"
 `);
     process.exit(0);
 }

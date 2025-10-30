@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 //
-// scripts/run-vitest.js
+// script/run-vitest.js
 // Run Vitest tests using vite-node directly (faster than npx)
 // Usage:
-//   node scripts/run-vitest.js              - run tests
-//   node scripts/run-vitest.js --coverage   - run with coverage
-//   node scripts/run-vitest.js --watch      - run in watch mode
+//   node script/run-vitest.js              - run tests
+//   node script/run-vitest.js --coverage   - run with coverage
+//   node script/run-vitest.js --watch      - run in watch mode
 //
 
 import { spawn } from 'node:child_process';

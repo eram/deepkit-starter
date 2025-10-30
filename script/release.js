@@ -1,5 +1,5 @@
-// scripts/release.js
-// Usage: node scripts/release.js [patch|minor|major|ci]
+// script/release.js
+// Usage: node script/release.js [patch|minor|major|ci]
 //   ci >> takes current tag and adds timestamp; does not tag the repo.
 //   no-params >> auto-detect bump type based on commits since last tag
 //   minor|major|patch >> explicit version bump type
@@ -30,7 +30,7 @@ try {
     // Determine bump type
     let bumpType = process.argv[2];
     if (![undefined, 'patch', 'minor', 'major', 'ci'].includes(bumpType)) {
-        error('Usage: node scripts/release.js [patch|minor|major|ci]');
+        error('Usage: node script/release.js [patch|minor|major|ci]');
     }
 
     // Get all clean semver tags and pick the latest (cross-platform)
