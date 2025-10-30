@@ -1,7 +1,9 @@
 {
+  "type": "module",
   "scripts": {
-    "app": "vite-node app.ts",
-    "dev": "vite-node app.ts"
+    "app": "vite-node src/app.ts",
+    "dev": "vite-node src/app.ts",
+    "ci": "node --test ci/*.test.js"
   },
   "dependencies": {
     "@deepkit/app": "^1.0.19",

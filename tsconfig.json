@@ -9,5 +9,5 @@
     "moduleResolution": "node"
   },
   "reflection": true,
-  "files": ["app.ts"]
+  "include": ["src/**/*"]
 }
