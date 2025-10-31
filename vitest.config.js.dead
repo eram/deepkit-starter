@@ -4,12 +4,24 @@ import { deepkitType } from '@deepkit/vite';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-    plugins: [deepkitType()],
+    plugins: [
+        deepkitType()
+    ],
+    build: {
+        minify: false,
+    },
+    // Skip node_modules in sourcemaps for debugging
+    server: {
+        sourcemapIgnoreList: (sourcePath) => sourcePath.includes('node_modules'),
+    },
     test: {
         // Set environment variable to prevent app from auto-running during tests
         env: {
             deepkit_test_mode: 'true',
         },
+        // Run tests single-threaded for debugging
+        threads: false,
+        isolate: false,
         // Coverage configuration matching c8 settings
         coverage: {
             provider: 'v8',
@@ -46,7 +58,8 @@ export default defineConfig({
         // NOTE: CI tests run via scripts/run-ci-tests.js (not through Vitest)
         include: ['src/**/*.test.ts'],
         // Test timeout for slow integration tests
-        testTimeout: 30000,
+        // Set to 0 to disable timeout when debugging (Vitest detects debug mode)
+        testTimeout: process.env.VSCODE_INSPECTOR_OPTIONS ? 0 : 30000,
         // Global setup if needed
         globals: false, // Explicit imports for better IDE support
     },

@@ -1,80 +1,21 @@
 {
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Debug Current File (vite-node)",
+       {
+            "name": "Debug Current Test File",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/vite-node",
-            "runtimeArgs": [],
+            "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
             "args": [
+                "run",
                 "${file}"
             ],
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/**",
+                "node_modules/**"
             ],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "env": {
-                "DEEPKIT_TEST_MODE": "true"
-            }
+            "sourceMaps": true,
+            "console": "integratedTerminal"
         },
-        {
-            "name": "Debug Current File with Args",
-            "type": "node",
-            "request": "launch",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/vite-node",
-            "runtimeArgs": [],
-            "args": [
-                "${file}",
-                "${input:commandArgs}"
-            ],
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "env": {
-                "DEEPKIT_TEST_MODE": "true"
-            }
-        },
-        {
-            "name": "Debug app.ts",
-            "type": "node",
-            "request": "launch",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/vite-node",
-            "runtimeArgs": [],
-            "args": [
-                "${workspaceFolder}/src/app.ts",
-                "${input:commandArgs}"
-            ],
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
-        },
-        {
-            "name": "Debug All Tests",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceFolder}/scripts/run-tests.js",
-            "args": [
-                "--verbose"
-            ],
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen"
-        }
     ],
-    "inputs": [
-        {
-            "id": "commandArgs",
-            "type": "promptString",
-            "description": "Command line arguments (e.g., 'test --verbose' or 'test TestUser 5')",
-            "default": ""
-        }
-    ]
 }

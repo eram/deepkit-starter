@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from 'vitest';
-import { app, TestCommand } from './app.ts';
+import { app, TestCommand } from './app';
 
 describe('TestCommand', () => {
     test('class is exported and decorated', () => {
@@ -21,7 +21,7 @@ describe('app', () => {
 
     test('has test controller registered', async () => {
         // Setup the app to introspect it
-        await app.setup();
+        app.setup(() => {});
 
         // Check if TestCommand is in the controllers
         const hasTestCommand = app.appModule.controllers.includes(TestCommand);

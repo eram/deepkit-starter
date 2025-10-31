@@ -35,7 +35,7 @@
     "lint:fix": "biome check --write .",
     "release": "node script/release.js",
     "rimraf": "node script/rimraf.js",
-    "test": "npm run lint && node script/run-vitest.js run",
+    "test": "npm run lint && vitest run src --coverage",
     "test:unit": "node script/run-vitest.js run --coverage",
     "test:watch": "node script/run-vitest.js"
   },
@@ -52,6 +52,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.3.2",
     "@vitest/coverage-v8": "^3.2.4",
+    "ts-node": "^10.9.2",
     "vitest": "^3.2.4"
   },
   "engines": {

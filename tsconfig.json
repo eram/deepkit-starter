@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "experimentalDecorators": true,
     "strict": true,
     "esModuleInterop": true,
     "target": "es2020",
-    "lib": ["es2020", "DOM"],
+    "lib": [
+      "es2020"
+    ],
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "skipLibCheck": true
+    "moduleResolution": "nodenext",
+    "noEmit": true
   },
   "reflection": true,
-  "include": ["src/**/*", "ci/**/*"]
+  "include": [
+    "src/**/*",
+    "ci/**/*"
+  ]
 }
